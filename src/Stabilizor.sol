@@ -1,18 +1,29 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.25;
+pragma solidity ^0.8.23;
+
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "forge-std/console2.sol";
 
 contract Stabilizor {
-    // stabilize(uint256[] calldata amounts) public 
+    IERC20 public token;
+
+    constructor(IERC20 _tokenAddress) {
+        token = _tokenAddress;
+    }
+
     function stabilizeMultiple(uint256[] calldata amounts) public {
-        // for each amount:
-        // transfer from alice
-        // transfer back to alice
-        //
+        address sender = msg.sender;
+
+        for (uint256 i = 0; i < amounts.length; i++) {
+            token.transferFrom(sender, address(this), amounts[i]);
+            token.transfer(sender, amounts[i]);
+        }
     }
 
     function stabilize(uint256 amount) public {
-        // transfer from alice
+        address sender = msg.sender;
 
-        // transfer back to alice
+        token.transferFrom(sender, address(this), amount);
+        token.transfer(sender, amount);
     }
 }
