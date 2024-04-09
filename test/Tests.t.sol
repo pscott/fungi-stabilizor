@@ -42,4 +42,15 @@ contract StabilizorTest is Test {
         stabilizor.stabilizeMultiple(amounts, 110);
         assertEq(token.balanceOf(address(this)), INITIAL_SUPPLY);
     }
+
+    function combineAndStabilizeTest() public {
+        uint256[] memory amounts = new uint256[](3);
+        amounts[0] = 25;
+        amounts[1] = 70;
+        amounts[2] = 5;
+
+        token.approve(address(stabilizor), INITIAL_SUPPLY * 2);
+        stabilizor.combineAndStabilize(amounts);
+        assertEq(token.balanceOf(address(this)), INITIAL_SUPPLY);
+    }
 }

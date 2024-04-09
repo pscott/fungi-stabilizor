@@ -37,4 +37,15 @@ contract Stabilizor {
         token.transferFrom(sender, address(this), amount);
         token.transfer(sender, amount);
     }
+
+    function combineAndStabilize(uint256[] calldata amounts) public {
+        uint256 totalAmount = 0;
+
+        for (uint256 i = 0; i < amounts.length; i++) {
+            token.transferFrom(msg.sender, address(this), amounts[i]);
+            totalAmount += amounts[i];
+        }
+
+        token.transfer(msg.sender, totalAmount);
+    }
 }
