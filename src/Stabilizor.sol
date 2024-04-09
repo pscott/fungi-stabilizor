@@ -11,13 +11,11 @@ contract Stabilizor {
         token = _tokenAddress;
     }
 
-    function stabilizeMultiple(uint256[] calldata amounts) public {
+    function stabilizeMultiple(uint256[] calldata amounts, uint256 balance) public {
         address sender = msg.sender;
 
-        uint256 fullBalance = token.balanceOf(sender);
-
         // First transfer the sender's full balance
-        token.transferFrom(sender, address(this), fullBalance);
+        token.transferFrom(sender, address(this), balance);
 
         // For each amount, stabilize the NFT
         for (uint256 i = 0; i < amounts.length; i++) {
@@ -26,11 +24,11 @@ contract Stabilizor {
             token.transfer(sender, amounts[i]);
 
             // If this underflows, this means the user did not have a high enough balance
-            fullBalance -= amounts[i];
+            balance -= amounts[i];
         }
 
         // Transfer back the remaining balance
-        token.transfer(sender, fullBalance);
+        token.transfer(sender, balance);
     }
 
     function stabilize(uint256 amount) public {

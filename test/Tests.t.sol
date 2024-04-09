@@ -39,7 +39,7 @@ contract StabilizorTest is Test {
         amounts[2] = 5;
 
         token.approve(address(stabilizor), INITIAL_SUPPLY * 2);
-        stabilizor.stabilizeMultiple(amounts);
+        stabilizor.stabilizeMultiple(amounts, 110);
         assertEq(token.balanceOf(address(this)), INITIAL_SUPPLY);
     }
 }
