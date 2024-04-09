@@ -43,9 +43,12 @@ contract Stabilizor {
 
         for (uint256 i = 0; i < amounts.length; i++) {
             token.transferFrom(msg.sender, address(this), amounts[i]);
+
             totalAmount += amounts[i];
         }
 
+        token.transfer(msg.sender, totalAmount);
+        token.transferFrom(msg.sender, address(this), totalAmount);
         token.transfer(msg.sender, totalAmount);
     }
 }
