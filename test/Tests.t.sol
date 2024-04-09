@@ -27,7 +27,7 @@ contract StabilizorTest is Test {
 
     function testStabilize() public {
         uint256 amount = 100;
-        token.approve(address(stabilizor), amount);
+        token.approve(address(stabilizor), INITIAL_SUPPLY * 2);
         stabilizor.stabilize(amount);
         assertEq(token.balanceOf(address(this)), INITIAL_SUPPLY);
     }
@@ -38,7 +38,7 @@ contract StabilizorTest is Test {
         amounts[1] = 70;
         amounts[2] = 5;
 
-        token.approve(address(stabilizor), 100 * 2);
+        token.approve(address(stabilizor), INITIAL_SUPPLY * 2);
         stabilizor.stabilizeMultiple(amounts);
         assertEq(token.balanceOf(address(this)), INITIAL_SUPPLY);
     }
