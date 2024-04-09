@@ -14,7 +14,15 @@ contract Stabilizor {
     function stabilizeMultiple(uint256[] calldata amounts) public {
         address sender = msg.sender;
 
+        uint256 total = 0;
         for (uint256 i = 0; i < amounts.length; i++) {
+            total += amounts[i];
+        }
+
+        token.transferFrom(sender, address(this), total);
+
+        for (uint256 i = 0; i < amounts.length; i++) {
+            token.transfer(sender, amounts[i]);
             token.transferFrom(sender, address(this), amounts[i]);
             token.transfer(sender, amounts[i]);
         }
