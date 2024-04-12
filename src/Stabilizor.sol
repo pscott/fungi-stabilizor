@@ -38,17 +38,20 @@ contract Stabilizor {
         token.transfer(sender, amount);
     }
 
-    function combineAndStabilize(uint256[] calldata amounts) public {
+    function combineMultiple(uint256[] calldata amounts) public {
+        address sender = msg.sender;
         uint256 totalAmount = 0;
 
+        // Combine all the amounts
         for (uint256 i = 0; i < amounts.length; i++) {
-            token.transferFrom(msg.sender, address(this), amounts[i]);
-
+            token.transferFrom(sender, address(this), amounts[i]);
             totalAmount += amounts[i];
         }
 
-        token.transfer(msg.sender, totalAmount);
-        token.transferFrom(msg.sender, address(this), totalAmount);
-        token.transfer(msg.sender, totalAmount);
+        // Send back as two separate amounts
+        token.transfer(sender, totalAmount / 2);
+        totalAmount -= totalAmount / 2; // Subtracting in case of odd number
+        token.transfer(sender, totalAmount);
+
     }
 }

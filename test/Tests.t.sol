@@ -7,7 +7,7 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract ERC20FixedSupply is ERC20 {
-    constructor(uint256 initialSupply) public ERC20("Test token", "TST") {
+    constructor(uint256 initialSupply) ERC20("Test token", "TST") {
         _mint(msg.sender, initialSupply);
     }
 }
@@ -43,14 +43,14 @@ contract StabilizorTest is Test {
         assertEq(token.balanceOf(address(this)), INITIAL_SUPPLY);
     }
 
-    function combineAndStabilizeTest() public {
+    function combineMultipleTest() public {
         uint256[] memory amounts = new uint256[](3);
         amounts[0] = 25;
         amounts[1] = 70;
         amounts[2] = 5;
 
         token.approve(address(stabilizor), INITIAL_SUPPLY * 2);
-        stabilizor.combineAndStabilize(amounts);
+        stabilizor.combineMultiple(amounts);
         assertEq(token.balanceOf(address(this)), INITIAL_SUPPLY);
     }
 }
